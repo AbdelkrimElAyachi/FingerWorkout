@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>client socket tester</title>
+    <!-- Use CDN instead -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <style>
+        #chat { height: 300px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; }
+        .message { margin: 5px 0; }
+        .system { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <input type="text" name="input" id="input">
+
+    <button>Create room</button>
+    <button onclick="join_room()">Join room</button>
+    <button onclick="send_message()">send Message</button>
+    <button onclick="connect()">connect</button>
+    <button onclick="disconnect()">disconnect</button>
+
+    <div>
+        <p class="error" id="error" style="color:red"></p>
+    </div>
+    <div class="informations">
+        <p>Socket ID : 
+            <span id="socket_id"></span>
+        </p>
+        <p>Romm ID : 
+            <span id="room_id"></span>
+        </p>
+    </div>
+    <div id="chat">
+    </div>
+
+    <script>
+        let socket;
+        const input = document.getElementById("input");
+        const socketIdEle = document.getElementById("socket_id");
+        const room_id_element = document.getElementById("room_id");
+        const chatDiv = document.getElementById("chat")
+        const errorEle = document.getElementById("error");
+
+        function connect(){
+            socket = io('http://localhost:3000');
+            socket.on('connect', () => {
+                socketIdEle.innerHTML = socket.id;
+            });
+
+            socket.on('room_message',(data)=>{
+                chatDiv.innerHTML += `
+                <div class="message">
+                    <strong>${data.sender}:</strong> ${data.message}
+                    <small>${new Date(data.timestamp).toLocaleTimeString()}</small>
+                </div>`;     
+            })
+        }
+
+        function disconnect(){
+            socketIdEle.innerHTML = ""; 
+            socket.disconnect();
+        }
+
+        function join_room(){
+            room_id = input.value;
+            socket.emit('join_room',room_id, (res)=>{
+                if(!res.success){
+                    errorEle.textContent = res.error;
+                    cleanErrors(3000)
+                }
+            });
+            room_id_element.innerHTML = room_id;
+        }
+
+        function send_message(){
+            message = input.value;
+            socket.emit('send_message', message , (res)=>{
+                if(!res.success){
+                    errorEle.textContent = res.error;
+                    cleanErrors(3000)
+                }
+            })
+        }
+
+        async function cleanErrors(time) {
+            setTimeout(() => {
+                errorEle.textContent = "";
+            }, time);
+        }
+    </script>
+</body>
+</html>
