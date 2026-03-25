@@ -1,26 +1,44 @@
-# FingerWorkout
+# fingerWorkout — Frontend
 
-FingerWorkout is an open-source web application designed to help users improve their typing speed and accuracy. It provides a range of exercises, games, and challenges to help users develop their typing skills.
+Vue 3 single-page application for the typing test and multiplayer race experience.
 
-## Features
+## Tech Stack
 
-- **Typing Exercises**: FingerWorkout offers a variety of typing exercises that target different aspects of typing, such as finger placement, speed, and accuracy.
-- **Typing Games**: Users can engage in fun and interactive typing games to make the learning process more enjoyable.
-- **Progress Tracking**: The application tracks user progress, allowing them to monitor their improvements over time.
-- **Customizable Layouts**: The website's layout and design can be customized to suit individual preferences.
-- **Multi language**: The website support differents language include (english, arabic, french).
+Vue 3 · Vite · Pinia · Vue Router · Tailwind CSS · Socket.IO Client · Chart.js
 
+## Setup
 
-## Installation and Setup
+```bash
+npm install
+npm run dev        # http://localhost:5173
+npm run build      # production build
+```
 
-To set up FingerWorkout on your local machine, follow these steps:
+## Environment Variables
 
-1. Clone the repository:
+Create a `.env` file:
 
-2. Navigate to the project directory:
+```env
+VITE_FEATURE_COMPETITION=true   # enable multiplayer mode
+```
 
-3. Install the required dependencies:
+## Structure
 
-4. Start the development server:
+```
+src/
+├── components/
+│   ├── auth/          # Login & signup forms
+│   ├── common/        # Reusable UI (Button, Input)
+│   ├── competition/   # Race line, lobby, chat, results
+│   ├── layout/        # Header, footer
+│   └── typing/        # Typing game & test components
+├── views/             # Page-level components
+├── stores/            # Pinia auth store
+├── services/          # Socket.IO service
+├── utils/             # API client, auth helpers
+└── styles/            # Global CSS & theme definitions
+```
 
-5. Open your web browser and visit `http://localhost:3000` to access the FingerWorkout website.
+## Themes
+
+Three built-in color themes selectable at runtime: **Default** (green), **Blue**, and **Pink**. All use a dark glassmorphism design system.
