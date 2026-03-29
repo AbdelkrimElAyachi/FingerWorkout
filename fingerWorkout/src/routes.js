@@ -19,7 +19,7 @@ const routes = [
     component: () => import("@/views/LoginView.vue"),
     label: 'Log In',
     icon: 'bi-box-arrow-in-right',
-    showInNav: true,
+    showInNav: isEnabled("auth"),
     requiresAuth: false,
     guestOnly: true,
   },
