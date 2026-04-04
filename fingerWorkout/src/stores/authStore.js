@@ -28,12 +28,14 @@ export const useAuthStore = defineStore('auth', {
         return;
       }
       else {
+        console.log("calling getUser")
         const res = await getUser();
         if (res) {
           this.name = res.name;
           this.email = res.email;
           this.picture = res.picture;
           this.authenticated = true;
+          console.log("calling getTopTestResult")
           const data = await getTopTestResult();
           this.topTestResult = data[0]?.wpm ?? 1;
         }
